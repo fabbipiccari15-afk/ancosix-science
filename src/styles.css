@@ -1,0 +1,485 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--ring-offset-background);
+  /* ANCoSIX semantic palette */
+  --color-ancosix-dark: var(--ancosix-dark);
+  --color-ancosix-light: var(--ancosix-light);
+  --color-ancosix-cream: var(--ancosix-cream);
+  --color-ancosix-ink: var(--ancosix-ink);
+  --color-ancosix-olive: var(--ancosix-olive);
+  --color-ancosix-deep: var(--ancosix-deep);
+  --color-ancosix-garnet: var(--ancosix-garnet);
+  --color-ancosix-ruby: var(--ancosix-ruby);
+  --color-ancosix-amber: var(--ancosix-amber);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+:root {
+  --radius: 0.625rem;
+  /* ANCoSIX palette (oklch) */
+  --ancosix-dark: oklch(0.1621 0.009 168.92); /* #0A0F0D */
+  --ancosix-light: oklch(0.9656 0.0091 78.28); /* #F7F3ED */
+  --ancosix-cream: oklch(0.9568 0.0119 79.78); /* #F5F0E8 */
+  --ancosix-ink: oklch(0.2257 0.0038 106.7); /* #1C1C1A */
+  --ancosix-olive: oklch(0.6737 0.0562 131.46); /* #8A9E7A */
+  --ancosix-deep: oklch(0.3745 0.0776 136.09); /* #2D4A1E */
+  --ancosix-garnet: oklch(0.4184 0.1469 18.86); /* #8B1A2B */
+  --ancosix-ruby: oklch(0.5293 0.1892 24.97); /* #C1272D */
+  --ancosix-amber: oklch(0.7518 0.0682 75.49); /* #C8A97E */
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* shadcn-compatible defaults (mapped to ANCoSIX) */
+  --background: var(--ancosix-dark);
+  --foreground: var(--ancosix-cream);
+  --card: var(--ancosix-dark);
+  --card-foreground: var(--ancosix-cream);
+  --popover: var(--ancosix-dark);
+  --popover-foreground: var(--ancosix-cream);
+  --primary: var(--ancosix-amber);
+  --primary-foreground: var(--ancosix-ink);
+  --secondary: var(--ancosix-deep);
+  --secondary-foreground: var(--ancosix-cream);
+  --muted: var(--ancosix-deep);
+  --muted-foreground: oklch(0.6737 0.0562 131.46);
+  --accent: var(--ancosix-olive);
+  --accent-foreground: var(--ancosix-dark);
+  --destructive: var(--ancosix-ruby);
+  --destructive-foreground: var(--ancosix-cream);
+  --border: oklch(0.6737 0.0562 131.46 / 30%);
+  --input: oklch(0.6737 0.0562 131.46 / 25%);
+  --ring: var(--ancosix-amber);
+  --ring-offset-background: var(--ancosix-dark);
+}
+
+.dark {
+  --background: var(--ancosix-dark);
+  --foreground: var(--ancosix-cream);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* ===== ANCoSIX utilities ===== */
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .label-uc {
+    text-transform: uppercase;
+    letter-spacing: 0.1875rem; /* 3px */
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  /* Scroll fade-up reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(2.5rem);
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Glassmorphism cards */
+  .glass-dark {
+    background: oklch(0.1621 0.009 168.92 / 55%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid oklch(0.6737 0.0562 131.46 / 30%);
+  }
+  .glass-light {
+    background: oklch(1 0 0 / 60%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid oklch(0.4184 0.1469 18.86 / 18%);
+  }
+
+  .card-glow {
+    transition:
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.5s ease;
+  }
+  .card-glow:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 50px -12px oklch(0.7518 0.0682 75.49 / 35%);
+    border-color: oklch(0.7518 0.0682 75.49 / 55%);
+  }
+
+  .hero-line {
+    background: linear-gradient(
+      90deg,
+      oklch(0.6737 0.0562 131.46) 0%,
+      oklch(0.7518 0.0682 75.49) 50%,
+      oklch(0.4184 0.1469 18.86) 100%
+    );
+  }
+
+  .float-slow {
+    animation: floaty 7s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-18px) rotate(4deg);
+    }
+  }
+
+  /* Ken Burns slow zoom for the hero slideshow — feels like cinematic video */
+  @keyframes kenburns {
+    0% {
+      transform: scale(1.08) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: scale(1.18) translate3d(-1.5%, -1.5%, 0);
+    }
+  }
+  .kenburns {
+    animation: kenburns 7s ease-out forwards;
+  }
+
+  /* Progress bar fill for the active hero slide indicator */
+  @keyframes heroProgress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  /* Caption fade-up when the active hero slide changes */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Floating phone bubble — pulsing ruby ring */
+  .phone-bubble::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    border: 2px solid oklch(0.5293 0.1892 24.97 / 55%);
+    animation: phonePulse 2.4s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes phonePulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  /* ===== Laboratory dropper + falling golden oil drop ===== */
+
+  /* The glass dropper bulb gently squeezes to release each drop */
+  @keyframes dropperSqueeze {
+    0%,
+    18%,
+    100% {
+      transform: scaleY(1);
+    }
+    30% {
+      transform: scaleY(0.82);
+    }
+    42% {
+      transform: scaleY(1.04);
+    }
+  }
+
+  /* A drop forms at the tip, grows, then detaches and falls */
+  @keyframes oilFall {
+    0% {
+      top: 100%;
+      transform: scaleY(0.4) scaleX(0.9);
+      opacity: 0;
+    }
+    18% {
+      top: 100%;
+      transform: scaleY(0.85) scaleX(1);
+      opacity: 0.95;
+    }
+    30% {
+      top: 100%;
+      transform: scaleY(1.15) scaleX(0.92);
+      opacity: 1;
+    }
+    40% {
+      top: 108%;
+      transform: scaleY(1.5) scaleX(0.78);
+      opacity: 1;
+    }
+    55% {
+      transform: scaleY(1.6) scaleX(0.72);
+      opacity: 1;
+    }
+    88% {
+      top: 86%;
+      transform: scaleY(1.7) scaleX(0.68);
+      opacity: 0.95;
+    }
+    100% {
+      top: 88%;
+      transform: scaleY(0.4) scaleX(1.6);
+      opacity: 0;
+    }
+  }
+
+  @keyframes oilSplash {
+    0%,
+    86% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    90% {
+      transform: scale(0.4);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  /* Glass laboratory dropper — bulb + thin glass tube + tapered tip */
+  .oil-dropper {
+    position: absolute;
+    top: 6%;
+    width: 26px;
+    height: 70px;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .oil-dropper .bulb {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 26px;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    background: linear-gradient(
+      180deg,
+      oklch(0.85 0.04 85 / 38%) 0%,
+      oklch(0.7 0.05 75 / 30%) 100%
+    );
+    border: 1px solid oklch(0.7518 0.0682 75.49 / 55%);
+    box-shadow:
+      inset 2px 2px 4px oklch(1 0 0 / 35%),
+      inset -2px -3px 5px oklch(0.5 0.1 60 / 45%),
+      0 0 12px oklch(0.7518 0.0682 75.49 / 35%);
+    transform-origin: bottom center;
+    animation: dropperSqueeze 3.6s ease-in-out infinite;
+  }
+  .oil-dropper .tube {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 34px;
+    background: linear-gradient(
+      90deg,
+      oklch(0.7 0.05 75 / 22%) 0%,
+      oklch(1 0 0 / 30%) 45%,
+      oklch(0.7 0.05 75 / 22%) 100%
+    );
+    border-left: 1px solid oklch(0.7518 0.0682 75.49 / 45%);
+    border-right: 1px solid oklch(0.7518 0.0682 75.49 / 45%);
+    border-radius: 2px 2px 0 0;
+  }
+  .oil-dropper .tip {
+    position: absolute;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 10px solid oklch(0.7518 0.0682 75.49 / 55%);
+    filter: drop-shadow(0 0 4px oklch(0.7518 0.0682 75.49 / 45%));
+  }
+
+  .oil-drop {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -7px;
+    width: 14px;
+    height: 22px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: radial-gradient(
+      ellipse at 38% 30%,
+      oklch(0.92 0.09 85) 0%,
+      oklch(0.7518 0.0682 75.49) 45%,
+      oklch(0.55 0.11 60) 100%
+    );
+    box-shadow:
+      0 0 10px oklch(0.7518 0.0682 75.49 / 55%),
+      inset -2px -3px 5px oklch(0.5 0.1 60 / 60%);
+    filter: blur(0.3px);
+    pointer-events: none;
+    animation: oilFall 3.6s cubic-bezier(0.42, 0, 0.7, 1) infinite;
+  }
+
+  .oil-splash {
+    position: absolute;
+    bottom: 4%;
+    width: 26px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      oklch(0.7518 0.0682 75.49 / 70%) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    transform: scale(0);
+    animation: oilSplash 3.6s ease-out infinite;
+  }
+}
+
+/* ===== ANCoSIX gold system (Tailwind v4 @utility) ===== */
+
+/* Thin gold fillet — the connective thread between sections */
+@utility gold-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.7518 0.0682 75.49 / 65%) 50%,
+    transparent 100%
+  );
+}
+
+/* Gold-leaf frame for the jewel image */
+@utility gold-frame {
+  border: 1px solid oklch(0.7518 0.0682 75.49 / 50%);
+  box-shadow:
+    0 0 0 1px oklch(0.7518 0.0682 75.49 / 12%),
+    0 0 40px -8px oklch(0.7518 0.0682 75.49 / 35%),
+    0 34px 64px -28px oklch(0.04 0.005 168 / 75%);
+}
+
+/* Illuminated manuscript drop-cap in gold */
+@utility drop-cap {
+  &::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.5em;
+    line-height: 0.78;
+    float: left;
+    margin: 0.06em 0.12em 0 0;
+    color: var(--ancosix-amber);
+    font-weight: 700;
+  }
+}
+
+/* Dark velvet plinth for the gem inside the light section */
+@utility jewel-plinth {
+  background:
+    radial-gradient(ellipse at 50% 28%, oklch(0.3745 0.0776 136.09 / 38%) 0%, transparent 62%),
+    radial-gradient(ellipse at 50% 80%, oklch(0.4184 0.1469 18.86 / 22%) 0%, transparent 55%),
+    var(--ancosix-dark);
+}
+
+/* Gold hairline that draws in on reveal */
+@utility gold-thread {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35em;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(90deg, var(--ancosix-amber), transparent);
+    transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+  &.is-visible::after {
+    width: 2.4em;
+  }
+}
